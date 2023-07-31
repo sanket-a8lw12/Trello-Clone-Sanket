@@ -1,11 +1,29 @@
-import React from 'react'
 
-export default function Header() {
+import "./Header.css"
+
+
+
+
+import * as React from 'react';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+
+
+function Header() {
+
   return (
-     <>
-      <div>
-        <h1>Trello</h1>
-      </div>
-    </>
-  )
+    <AppBar>
+      <Container maxWidth="xl">
+        <Toolbar disableGutters sx={{justifyContent: 'center'}}>
+          <Typography variant="h4">
+            TRELLO
+          </Typography>
+        </Toolbar>
+      </Container>
+    </AppBar>
+  );
 }
+export default Header;
+

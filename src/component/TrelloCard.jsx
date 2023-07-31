@@ -14,7 +14,7 @@ export default function TrelloCard({cardImage, cardName, id}) {
         border: "3px solid black"
       };
       function handleClick(){
-        console.log("Deep")
+        // console.log("Deep")
       }
 
   return (
