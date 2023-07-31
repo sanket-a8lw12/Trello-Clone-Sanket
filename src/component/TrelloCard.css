@@ -1,0 +1,14 @@
+.trelloCard{
+    height: 10em;
+    width: 15em;
+    display: flex;
+    /* color: red; */
+    background-color: lightgray;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.trello{
+    display: flex;
+    gap: 1em;
+}

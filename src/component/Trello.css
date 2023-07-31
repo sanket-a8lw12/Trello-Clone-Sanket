@@ -1,0 +1,22 @@
+.trelloInfo{
+    display: flex;
+    gap: 1em;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    padding: 2em;
+    padding-top: 4em;
+
+}
+
+.trelloCard{
+    height: 10em;
+    width: 15em;
+    display: flex;
+    color: red;
+    background-color: lightgray;
+}
+
+.createNewcard{
+    display: flex;
+    flex-direction: column;
+}
