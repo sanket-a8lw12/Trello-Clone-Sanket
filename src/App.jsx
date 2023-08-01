@@ -10,6 +10,7 @@ import {
   Route,
   Routes
 } from "react-router-dom";
+
 import TrelloCardList from './component/TrelloCardList';
 
 function App() {
@@ -32,30 +33,38 @@ function App() {
   }, [])
 
 
-  // console.log(trelloData);
 
-  // trelloData.map((item) => {
-  //   console.log("----------------")
-  //   console.log(item.prefs.backgroundImage);
-  // })
+  async function handleClick(name) {
+    const url = 'https://api.trello.com/1/boards/';
+    const params = {
+      name: name,
+      key: '7d88baae66e0dbda0675ce6fbb6b1aa8',
+      token: 'ATTA31f0431674540d74dfa25400a6d53fcd457d38bdb6067c796929effcc92bc0a5B9968DA5',
+    };
+
+    let newBoard = await axios.post(url, null, { params: params });
+    setTrelloData([...trelloData, newBoard])
+  }
+
 
   return (
     <>
+    <Header />
       <Routes>
+
         <Route path="/" element={
           <>
-            <Header />
-            <Trello trelloData={trelloData}/>
+            <Trello trelloData={trelloData} handleClick={handleClick} />
           </>
-          }/>
+        }>
+        </Route>
+        <Route path="/trelloCardList/:id" element={
 
-          <Route path="/trelloCardList/:id" element={
-            
-            <>
-             <Header />
+          <>  
             <TrelloCardList />
-            </>
-          }/>
+          </>
+        }>
+        </Route>
       </Routes >
 
 
