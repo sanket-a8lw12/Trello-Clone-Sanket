@@ -1,26 +1,34 @@
-import { Height } from '@mui/icons-material';
+import { Height, Padding } from '@mui/icons-material';
 import React from 'react'
 import { Link } from 'react-router-dom';
+import { Card, CardContent, Typography } from '@mui/material';
+export default function ListCard({name}) {
 
-export default function ListCard() {
+
   const cardStyle = {
+    backgroundColor: "grey",
+    // backgroundImage: `url("${image}")`,
+    backgroundSize: "cover",
     color: "white",
-    borderRadius: "1em",
+    borderRadius: "0.4em",
     display: "flex",
     justifyContent: "center",
     border: "3px solid black",
-    Height: "2em",
-    width: "4em"
+    width: "14em",
+    height: "6em",
   };
-  function handleClick() {
-    console.log("Deep")
-  }
   return (
     <>
-      <Link to={`/trelloCardList/${id}`}>
-        <div className='trelloCard' style={cardStyle} onClick={handleClick}>
-        </div>
-      </Link>
+        
+      <Card style={cardStyle}>
+        <CardContent>
+          <Typography variant="h6">
+            {name}
+          </Typography>
+        </CardContent>
+      </Card>
     </>
   )
 }
+
+
