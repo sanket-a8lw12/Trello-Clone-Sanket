@@ -19,7 +19,7 @@ export default function ListCard({ name, id }) {
 
 
   const cardStyle = {
-    backgroundColor: "grey",
+    backgroundColor: "black",
     backgroundSize: "cover",
     color: "white",
     borderRadius: "0.4em",
@@ -33,10 +33,7 @@ export default function ListCard({ name, id }) {
 
   function handleAddACardName(name) {
     setAddACard(name);
-    // console.log(name)
   }
-
-
 
   const url = `https://api.trello.com/1/lists/${id}/cards?key=${VITE_KEY}&token=${VITE_TOKEN}`;
 
@@ -61,8 +58,6 @@ export default function ListCard({ name, id }) {
   return (
     <>
 
-
-
       <Card style={cardStyle}>
         <CardContent>
           <Typography variant="h6" sx={{ textAlign: "center" }}>
@@ -71,14 +66,17 @@ export default function ListCard({ name, id }) {
           {cardData.filter((item) => {
             return item.idList === id;
           }).map((data) => {
-            console.log(id)
-            console.log("------------------")
-            return <CardData key={data.name} name={data.name} />
+            return <CardData key={data.name}
+              id={data.id}
+              name={data.name}
+              setCardData={setCardData}
+              cardData={cardData}
+            />
           })
 
           }
 
-          <Card sx>
+          <Card>
             <CardContent sx={{
               display: "flex",
               gap: "1em"
