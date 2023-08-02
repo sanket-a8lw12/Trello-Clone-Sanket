@@ -10,7 +10,7 @@ export default function Trello({ trelloData, handleClick }) {
 
   const cardStyle = {
     backgroundColor: "lightgrey",
-    // backgroundImage: `url(${cardImage})`,
+    backgroundImage: "url(https://images.pexels.com/photos/2238886/pexels-photo-2238886.jpeg?auto=compress&cs=tinysrgb&w=600)",
     backgroundSize: "cover",
     color: "white",
     borderRadius: "0.4em",
@@ -44,6 +44,7 @@ export default function Trello({ trelloData, handleClick }) {
           <CardContent style={cardStyle}>
             <Typography variant="h6">
               <TextField
+              sx={{backgroundColor: "white"}}
                 label="Enter Board Name"
                 variant="outlined"
                 onChange={(event) => handleChange(event.target.value)}
