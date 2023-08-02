@@ -4,6 +4,7 @@ import Fab from '@mui/material/Fab';
 import DeleteIcon from '@mui/icons-material/Delete';
 const { VITE_KEY, VITE_TOKEN } = import.meta.env;
 import axios from "axios";
+import CheckList from './CheckList';
 
 export default function CardData({ id, name, setCardData, cardData }) {
 
@@ -39,7 +40,7 @@ export default function CardData({ id, name, setCardData, cardData }) {
         width: "14em"
 
       }}>
-        {name}
+        <CheckList name={name} />
       </Fab>
       <DeleteIcon onClick={() => deleteCard()}
       sx={{color: "red"}} />

@@ -16,8 +16,8 @@ export default function TrelloCard({ cardName, id}) {
     display: "flex",
     justifyContent: "center",
     border: "3px solid black",
-    width: "14em",
-    height: "6em",
+    minWidth: "14em",
+    minHeight: "6em",
   };
 
   return (

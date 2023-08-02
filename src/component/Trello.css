@@ -8,6 +8,11 @@
 
 }
 
+.trello{
+    background-color: aqua;
+    height: 100vh;
+}
+
 .trelloCard{
     height: 10em;
     width: 15em;

@@ -30,7 +30,7 @@ export default function Trello({ trelloData, handleClick }) {
 
   return (
     <div className='trello'>
-      <div className='trelloInfo'>
+      <div className='trelloInfo' >
         {trelloData.map((data) => {
           return < TrelloCard
             key={data.name}

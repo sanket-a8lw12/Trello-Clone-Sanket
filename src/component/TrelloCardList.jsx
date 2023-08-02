@@ -38,7 +38,7 @@ export default function TrelloCardList() {
     flexDirection: "column",
     justifyContent: "center",
     border: "3px solid black",
-    width: "15em",
+    minWidth: "15em",
     height: "7em",
   };
 
@@ -57,7 +57,9 @@ export default function TrelloCardList() {
     <div style={{
       display: "flex",
       paddingTop: "5em",
-      gap: "1em"
+      gap: "1em",
+      overflowX: "auto",
+      height: "85vh"
     }}>
 
       {listBoard.map((data) => {

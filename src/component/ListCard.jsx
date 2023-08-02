@@ -26,8 +26,8 @@ export default function ListCard({ name, id }) {
     display: "flex",
     justifyContent: "center",
     border: "3px solid black",
-    width: "15em",
-    flexWrap: "wrap",
+    minWidth: "15em",
+    // flexWrap: "wrap",
   };
 
 
@@ -56,7 +56,7 @@ export default function ListCard({ name, id }) {
   }
 
   return (
-    <>
+    <div>
 
       <Card style={cardStyle}>
         <CardContent>
@@ -93,7 +93,8 @@ export default function ListCard({ name, id }) {
               </Typography>
 
               <Fab size="medium" color="secondary" aria-label="add"
-                onClick={() => handleAddACard(addACard)}
+                onClick={() => {
+                  if(addACard){handleAddACard(addACard)}}}
               >
                 <AddIcon />
               </Fab>
@@ -103,7 +104,7 @@ export default function ListCard({ name, id }) {
 
         </CardContent>
       </Card>
-    </>
+    </div>
   )
 }
 
