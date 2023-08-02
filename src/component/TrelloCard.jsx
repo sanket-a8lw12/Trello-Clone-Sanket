@@ -9,7 +9,7 @@ import { Card, CardContent, Typography } from '@mui/material';
 export default function TrelloCard({ cardName, id}) {
   const cardStyle = {
     backgroundColor: "grey",
-    // backgroundImage: `url("${image}")`,
+    backgroundImage: "url(https://images.pexels.com/photos/260877/pexels-photo-260877.jpeg?auto=compress&cs=tinysrgb&w=600)",
     backgroundSize: "cover",
     color: "white",
     borderRadius: "0.4em",
