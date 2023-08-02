@@ -8,7 +8,7 @@ import { Card, CardContent, Typography } from '@mui/material';
 
 export default function TrelloCard({ cardName, id}) {
   const cardStyle = {
-    backgroundColor: "grey",
+    backgroundColor: "lightgrey",
     backgroundImage: "url(https://images.pexels.com/photos/260877/pexels-photo-260877.jpeg?auto=compress&cs=tinysrgb&w=600)",
     backgroundSize: "cover",
     color: "white",
@@ -19,8 +19,6 @@ export default function TrelloCard({ cardName, id}) {
     width: "14em",
     height: "6em",
   };
-
-  // console.log("id = " + id);
 
   return (
     <Link to={`/trelloCardList/${id}`} style={{ textDecoration: 'none' }}>
