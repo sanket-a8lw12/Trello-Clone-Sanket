@@ -31,9 +31,6 @@ export default function ListCard({ name, id }) {
   };
 
 
-  function handleAddACardName(name) {
-    setAddACard(name);
-  }
 
   const url = `https://api.trello.com/1/lists/${id}/cards?key=${VITE_KEY}&token=${VITE_TOKEN}`;
 
@@ -47,6 +44,12 @@ export default function ListCard({ name, id }) {
         console.error(error);
       })
   }, [])
+
+  //function to set name and add new card
+
+  function handleAddACardName(name) {
+    setAddACard(name);
+  }
 
   async function handleAddACard(name) {
     const url = 'https://api.trello.com/1/cards';
@@ -88,15 +91,15 @@ export default function ListCard({ name, id }) {
                 }}
                   label="Add a Card"
                   variant="outlined"
-                  onChange={(event) => handleAddACardName(event.target.value)}
-                />
+                  onChange={(event) => handleAddACardName(event.target.value)} />  {/* name of the card */}
+
               </Typography>
 
               <Fab size="medium" color="secondary" aria-label="add"
                 onClick={() => {
-                  if(addACard){handleAddACard(addACard)}}}
-              >
-                <AddIcon />
+                  if (addACard) { handleAddACard(addACard) }
+                }}  >  {/* Add a cards */}
+                <AddIcon />   {/* Add button for the cards */}
               </Fab>
             </CardContent>
           </Card>

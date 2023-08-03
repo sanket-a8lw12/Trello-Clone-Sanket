@@ -13,7 +13,7 @@ export default function CardData({ id, name, setCardData, cardData }) {
     console.log("clicked on delete")
     const urlDelete = "https://api.trello.com/1/cards/"
     let newArr = await axios.delete(`${urlDelete}${id}?key=${VITE_KEY}&token=${VITE_TOKEN}`);
-    console.log(newArr)
+    // console.log(newArr)
 
     let newArray = cardData.filter((item)=>{
       // console.log(item.id);
@@ -40,7 +40,7 @@ export default function CardData({ id, name, setCardData, cardData }) {
         width: "14em"
 
       }}>
-        <CheckList name={name} />
+        <CheckList name={name} id={id}/>
       </Fab>
       <DeleteIcon onClick={() => deleteCard()}
       sx={{color: "red"}} />
