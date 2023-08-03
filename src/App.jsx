@@ -14,6 +14,8 @@ import TrelloCardList from './component/TrelloCardList';
 function App() {
 
   const [trelloData, setTrelloData] = useState([]);
+  const [error, setError] = useState('');
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const baseURL = `https://api.trello.com/1/members/me/boards?key=${VITE_KEY}&token=${VITE_TOKEN}`;
 
@@ -23,8 +25,10 @@ function App() {
         return response.data
       }).then((trello) => {
         setTrelloData(trello);
+        setIsLoaded(true);
       }).catch((error) => {
-        console.error(error);
+        console.error(error.message);
+        setError(error.message);
       })
   }, [])
 
@@ -37,26 +41,35 @@ function App() {
   }
 
 
+  if (error !== '') {
+    return <h2>{error}</h2>
+  }
+
+
   return (
     <>
-      <Header />
-      <Routes>
+      {!isLoaded ?
+        <h2 id='Loading'>Loading the data...</h2> :
+        <div>
+          <Header />
+          <Routes>
 
-        <Route path="/" element={
-          <>
-            <Trello trelloData={trelloData} handleClick={handleClick} />
-          </>
-        }>
-        </Route>
-        <Route path="/trelloCardList/:id" element={
+            <Route path="/" element={
+              <>
+                <Trello trelloData={trelloData} handleClick={handleClick} />
+              </>
+            }>
+            </Route>
+            <Route path="/trelloCardList/:id" element={
 
-          <>
-            <TrelloCardList />
-          </>
-        }>
-        </Route>
-      </Routes >
-
+              <>
+                <TrelloCardList />
+              </>
+            }>
+            </Route>
+          </Routes >
+        </div>
+      }
 
     </>
   )
