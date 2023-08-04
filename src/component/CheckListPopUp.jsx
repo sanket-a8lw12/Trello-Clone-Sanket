@@ -8,14 +8,16 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import axios from "axios"
-import { Typography } from '@mui/material';
+import { FormGroup, Typography } from '@mui/material';
 import TextField from '@mui/material/TextField';
 const { VITE_KEY, VITE_TOKEN } = import.meta.env;
-import CheckList from './CheckList';
 import Box from '@mui/material/Box';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Checkbox from './CheckBox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
-export default function CheckListPopUp({ name, id }) {
+
+export default function CheckListPopUp({ name, id, cardData }) {
   const [open, setOpen] = React.useState(false);
   const [list, setList] = useState([]);
   const [listName, setListName] = useState("");
@@ -53,25 +55,28 @@ export default function CheckListPopUp({ name, id }) {
     setListName(name);
   }
 
-  function handList(){
-      setOpen(false);
+  function handList() {
+    setOpen(false);
   }
 
-  //(https://api.trello.com/1/checklists/${listID}?key=${VITE_KEY}&token=${VITE_TOKEN} )
 
-  async function deleteCheckList(ID){
-    console.log("na ja na ja na ja ")
-    console.log("id = " + id)
-    console.log("item.id = " + ID)
+  async function deleteCheckList(ID) {
+    // console.log("na ja na ja na ja ")
+    // console.log("id = " + id)
+    // console.log("item.id = " + ID)
     const deleteUrl = "https://api.trello.com/1/checklists/";
     let delCheckList = await axios.delete(`${deleteUrl}${ID}?key=${VITE_KEY}&token=${VITE_TOKEN}`)
 
-    let newList = list.filter((item)=>{
+    let newList = list.filter((item) => {
       return item.id !== ID;
     })
     setList(newList);
   }
 
+
+  function addCheckBox() {
+    console.log("Just a Dream")
+  }
 
 
 
@@ -83,9 +88,9 @@ export default function CheckListPopUp({ name, id }) {
     let newCheckList = await axios.post(`${url}&name=${listName}&idCard=${id}&key=${VITE_KEY}&token=${VITE_TOKEN}`)
     setList([...list, newCheckList.data]);
   }
-console.log(listName)
-console.log("List data")
-  console.log(list)
+  // console.log(listName)
+  // console.log("List data")
+  // console.log(list)
 
 
   return (
@@ -95,72 +100,84 @@ console.log("List data")
         open={open}
         // onClose={handleAddList}
         scroll='body'
-        sx={{backgroundColor: "grey"}}
+        sx={{ backgroundColor: "grey" }}
       >
-        <DialogTitle id="scroll-dialog-title" sx={{textAlign: "center", }}>{name}</DialogTitle>
+        <DialogTitle id="scroll-dialog-title" sx={{ textAlign: "center", }}>{name}</DialogTitle>
         <DialogContent dividers={scroll === 'paper'}
-        sx={{width: "em"}}
-          >
+          sx={{ width: "em" }}
+        >
           <DialogContentText
             id="scroll-dialog-description"
             tabIndex={-1}
-            sx={{textAlign: "center"}}
+            sx={{ textAlign: "center" }}
           >
 
-
-
-
-
-
-            {list.map((item)=>{
-              // return <h3 key={item.name}> {item.name} </h3>
-              return <Box sx={{
+            {list.map((item) => {
+              console.log(item.checkItems);
+              return < Box sx={{
                 '& > :not(style)': { m: 1 },
                 display: "flex",
+                flexDirection: "column",
                 justifyContent: "space-between",
                 // border: "2px solid black",
               }}>
-          
-                <Fab variant="extended" sx={{
+               <div style={{display: "flex", gap: "1em"}}>
+               <Fab variant="extended" sx={{
                   width: "14em"
                 }} >
                   {item.name}
                 </Fab>
+
+                <Fab size="small" color="secondary" aria-label="add" onClick={() => addCheckBox()}>
+                  <AddIcon />
+                </Fab>
+                
                 <DeleteIcon onClick={() => deleteCheckList(item.id)}
-                sx={{color: "red"}} />
+                  sx={{ color: "red" }} />
+               </div>
+
+                {item.checkItems.map((checkBoxItem) => {
+                  return (
+                    <FormGroup>
+                      <FormControlLabel control={<Checkbox defaultChecked />} label={checkBoxItem.name} />
+                    </FormGroup>
+                  )
+                })}
+
               </Box>
             })}
 
           </DialogContentText>
         </DialogContent>
 
-        <form onSubmit={(event)=>{
+        <form onSubmit={(event) => {
           console.log('submited');
           event.preventDefault();
           handleAddList(event.target.name.value)
-          }}>
-        <Typography variant="h6"
-          sx={{padding: "1em", display: "flex", gap: "1em",
-          }}
-        > 
-          <TextField sx={{
-            height: "1em",
-            width: '10em',
-          }}
-          id='name'
-            label="Enter CheckList Name"
-            variant="outlined"
+        }}>
+          <Typography variant="h6"
+            sx={{
+              padding: "1em", display: "flex", gap: "1em",
+            }}
+          >
+            <TextField sx={{
+              height: "1em",
+              width: '10em',
+            }}
+              id='name'
+              label="Enter CheckList Name"
+              variant="outlined"
             // onChange={(event) => handleListName(event.target.value)}
-             /> 
+            />
 
-          <Fab color="primary" aria-label="add" type='submit'>
-            <AddIcon />
-          </Fab>
+            <Fab color="primary" aria-label="add" type='submit'>
+              <AddIcon />
+            </Fab>
 
-        </Typography>
-        <DialogActions>
-          <Button onClick={() => handList()}>Cancel</Button>
-        </DialogActions>
+          </Typography>
+          <DialogActions>
+            <Button onClick={() => handList()}>Cancel</Button>
+          </DialogActions>
         </form>
 
       </Dialog>

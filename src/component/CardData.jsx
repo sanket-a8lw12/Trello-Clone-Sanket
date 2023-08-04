@@ -35,7 +35,7 @@ export default function CardData({ id, name, setCardData, cardData }) {
         width: "14em"
       }} >
         {/* {name} */}
-        <CheckListPopUp name={name} id={id}/>
+        <CheckListPopUp name={name} id={id} cardData={cardData}/>
       </Fab>
       <DeleteIcon onClick={() => deleteCard()}
       sx={{color: "red"}} />
