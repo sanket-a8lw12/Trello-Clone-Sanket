@@ -57,8 +57,24 @@ export default function CheckListPopUp({ name, id }) {
       setOpen(false);
   }
 
+  //(https://api.trello.com/1/checklists/${listID}?key=${VITE_KEY}&token=${VITE_TOKEN} )
 
-  //https://api.trello.com/1/checklists?idCard=5abbe4b7ddc1b351ef961414&key=APIKey&token=APIToken
+  async function deleteCheckList(ID){
+    console.log("na ja na ja na ja ")
+    console.log("id = " + id)
+    console.log("item.id = " + ID)
+    const deleteUrl = "https://api.trello.com/1/checklists/";
+    let delCheckList = await axios.delete(`${deleteUrl}${ID}?key=${VITE_KEY}&token=${VITE_TOKEN}`)
+
+    let newList = list.filter((item)=>{
+      return item.id !== ID;
+    })
+    setList(newList);
+  }
+
+
+
+
 
   async function handleAddList(listName) {
     // setOpen(false);
@@ -110,7 +126,7 @@ console.log("List data")
                 }} >
                   {item.name}
                 </Fab>
-                <DeleteIcon onClick={() => deleteCard()}
+                <DeleteIcon onClick={() => deleteCheckList(item.id)}
                 sx={{color: "red"}} />
               </Box>
             })}
@@ -132,7 +148,7 @@ console.log("List data")
             width: '10em',
           }}
           id='name'
-            label=""
+            label="Enter CheckList Name"
             variant="outlined"
             // onChange={(event) => handleListName(event.target.value)}
              /> 
