@@ -15,6 +15,7 @@ import Box from '@mui/material/Box';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Checkbox from './CheckBox';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import CheckBox from './CheckBox';
 
 
 export default function CheckListPopUp({ name, id, cardData }) {
@@ -22,16 +23,6 @@ export default function CheckListPopUp({ name, id, cardData }) {
   const [list, setList] = useState([]);
   const [listName, setListName] = useState("");
 
-  // const cardStyle = {
-  //   backgroundColor: "black",
-  //   backgroundSize: "cover",
-  //   color: "white",
-  //   borderRadius: "0.4em",
-  //   display: "flex",
-  //   justifyContent: "center",
-  //   border: "3px solid black",
-  //   minWidth: "15em",
-  // };
 
   const listUrl = `https://api.trello.com/1/cards/${id}/checklists?key=${VITE_KEY}&token=${VITE_TOKEN}`;
 
@@ -61,11 +52,8 @@ export default function CheckListPopUp({ name, id, cardData }) {
 
 
   async function deleteCheckList(ID) {
-    // console.log("na ja na ja na ja ")
-    // console.log("id = " + id)
-    // console.log("item.id = " + ID)
     const deleteUrl = "https://api.trello.com/1/checklists/";
-    let delCheckList = await axios.delete(`${deleteUrl}${ID}?key=${VITE_KEY}&token=${VITE_TOKEN}`)
+    await axios.delete(`${deleteUrl}${ID}?key=${VITE_KEY}&token=${VITE_TOKEN}`)
 
     let newList = list.filter((item) => {
       return item.id !== ID;
@@ -74,23 +62,19 @@ export default function CheckListPopUp({ name, id, cardData }) {
   }
 
 
-  function addCheckBox() {
-    console.log("Just a Dream")
-  }
 
 
 
 
   async function handleAddList(listName) {
-    // setOpen(false);
     console.log("Clicked add" + listName)
     const url = "https://api.trello.com/1/checklists?";
     let newCheckList = await axios.post(`${url}&name=${listName}&idCard=${id}&key=${VITE_KEY}&token=${VITE_TOKEN}`)
     setList([...list, newCheckList.data]);
   }
-  // console.log(listName)
-  // console.log("List data")
-  // console.log(list)
+
+  console.log("List data")
+  console.log(list)
 
 
   return (
@@ -98,7 +82,7 @@ export default function CheckListPopUp({ name, id, cardData }) {
       <Button onClick={handleClickOpen}>{name}</Button>
       <Dialog
         open={open}
-        // onClose={handleAddList}
+      
         scroll='body'
         sx={{ backgroundColor: "grey" }}
       >
@@ -113,36 +97,27 @@ export default function CheckListPopUp({ name, id, cardData }) {
           >
 
             {list.map((item) => {
-              console.log(item.checkItems);
               return < Box sx={{
                 '& > :not(style)': { m: 1 },
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
-                // border: "2px solid black",
-              }}>
-               <div style={{display: "flex", gap: "1em"}}>
-               <Fab variant="extended" sx={{
-                  width: "14em"
-                }} >
-                  {item.name}
-                </Fab>
+              }} key={item.name}>
+                <div style={{ display: "flex", gap: "1em" }}>
+                  <Fab variant="extended" sx={{
+                    width: "14em"
+                  }} >
+                    {item.name}
+                  </Fab>
 
-                <Fab size="small" color="secondary" aria-label="add" onClick={() => addCheckBox()}>
-                  <AddIcon />
-                </Fab>
-                
-                <DeleteIcon onClick={() => deleteCheckList(item.id)}
-                  sx={{ color: "red" }} />
-               </div>
 
-                {item.checkItems.map((checkBoxItem) => {
-                  return (
-                    <FormGroup>
-                      <FormControlLabel control={<Checkbox defaultChecked />} label={checkBoxItem.name} />
-                    </FormGroup>
-                  )
-                })}
+
+                  <DeleteIcon onClick={() => deleteCheckList(item.id)}
+                    sx={{ color: "red" }} />
+                </div>
+
+                  < CheckBox list={list} setList={setList} item={item}  id={id}/>
+
 
               </Box>
             })}
@@ -167,7 +142,6 @@ export default function CheckListPopUp({ name, id, cardData }) {
               id='name'
               label="Enter CheckList Name"
               variant="outlined"
-            // onChange={(event) => handleListName(event.target.value)}
             />
 
             <Fab color="primary" aria-label="add" type='submit'>
