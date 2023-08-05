@@ -73,8 +73,8 @@ export default function CheckListPopUp({ name, id, cardData }) {
     setList([...list, newCheckList.data]);
   }
 
-  console.log("List data")
-  console.log(list)
+  // console.log("List data")
+  // console.log(list)
 
 
   return (
