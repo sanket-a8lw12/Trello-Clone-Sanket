@@ -1,78 +1,96 @@
-import { useState, useEffect } from 'react'
-import './App.css'
-import Header from './component/Header'
+import { useReducer, useEffect } from 'react';
+import './App.css';
+import Header from './component/Header';
 import Trello from './component/Trello';
-
 import axios from "axios";
-import {
-  Route,
-  Routes
-} from "react-router-dom";
-const { VITE_KEY, VITE_TOKEN } = import.meta.env;
+import { Route, Routes } from "react-router-dom";
 import TrelloCardList from './component/TrelloCardList';
 
-function App() {
 
-  const [trelloData, setTrelloData] = useState([]);
-  const [error, setError] = useState('');
-  const [isLoaded, setIsLoaded] = useState(false);
+const { VITE_KEY, VITE_TOKEN } = import.meta.env;
+
+const initialState = {
+  trelloData: [],
+  error: '',
+  isLoaded: false,
+};
+
+const actionTypes = {
+  SET_TRELLO_DATA: 'SET_TRELLO_DATA',
+  SET_ERROR: 'SET_ERROR',
+  SET_IS_LOADED: 'SET_IS_LOADED',
+};
+
+function appReducer(state, action) {
+  switch (action.type) {
+    case actionTypes.SET_TRELLO_DATA:
+      return { ...state, trelloData: action.payload };
+    case actionTypes.SET_ERROR:
+      return { ...state, error: action.payload };
+    case actionTypes.SET_IS_LOADED:
+      return { ...state, isLoaded: action.payload };
+    default:
+      return state;
+  }
+}
+
+function App() {
+  const [state, dispatch] = useReducer(appReducer, initialState);
 
   const baseURL = `https://api.trello.com/1/members/me/boards?key=${VITE_KEY}&token=${VITE_TOKEN}`;
 
   useEffect(() => {
     axios.get(baseURL)
       .then((response) => {
-        return response.data
-      }).then((trello) => {
-        setTrelloData(trello);
-        setIsLoaded(true);
-      }).catch((error) => {
-        console.error(error.message);
-        setError(error.message);
+        dispatch({ type: actionTypes.SET_TRELLO_DATA, payload: response.data });
+        dispatch({ type: actionTypes.SET_IS_LOADED, payload: true });
       })
-  }, [])
-
-
+      .catch((error) => {
+        console.error(error.message);
+        dispatch({ type: actionTypes.SET_ERROR, payload: error.message });
+      });
+  }, []);
 
   async function handleClick(name) {
     const url = 'https://api.trello.com/1/boards';
-    let newBoard = await axios.post(`${url}?name=${name}&key=${VITE_KEY}&token=${VITE_TOKEN}`);
-    setTrelloData([...trelloData, newBoard])
+    try {
+      let response = await axios.post(`${url}?name=${name}&key=${VITE_KEY}&token=${VITE_TOKEN}`);
+      let newBoard = response.data; // Access the data property of the response object
+      dispatch({ type: actionTypes.SET_TRELLO_DATA, payload: [...state.trelloData, newBoard] });
+    } catch (error) {
+      console.error(error.message);
+      dispatch({ type: actionTypes.SET_ERROR, payload: error.message });
+    }
   }
 
-
-  if (error !== '') {
-    return <h2>{error}</h2>
+  if (state.error !== '') {
+    return <h2>{state.error}</h2>
   }
-
 
   return (
     <>
-      {!isLoaded ?
+      {!state.isLoaded ?
         <h2 id='Loading'>Loading the data...</h2> :
         <div>
           <Header />
           <Routes>
-
             <Route path="/" element={
               <>
-                <Trello trelloData={trelloData} handleClick={handleClick} />
+                <Trello trelloData={state.trelloData} handleClick={handleClick} />
               </>
             }>
             </Route>
             <Route path="/trelloCardList/:id" element={
-
               <>
                 <TrelloCardList />
               </>
             }>
             </Route>
-          </Routes >
+          </Routes>
         </div>
       }
-
     </>
-  )
+  );
 }
 
-export default App
+export default App;
