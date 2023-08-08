@@ -1,78 +1,76 @@
-import { useState, useEffect } from 'react'
-import './App.css'
-import Header from './component/Header'
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import './App.css';
+import Header from './component/Header';
 import Trello from './component/Trello';
-
-import axios from "axios";
-import {
-  Route,
-  Routes
-} from "react-router-dom";
-const { VITE_KEY, VITE_TOKEN } = import.meta.env;
 import TrelloCardList from './component/TrelloCardList';
+import axios from 'axios';
+import { Route, Routes } from 'react-router-dom';
+import { setData, setError, addBoard } from './boardSlice';
+const { VITE_KEY, VITE_TOKEN } = import.meta.env;
 
 function App() {
-
-  const [trelloData, setTrelloData] = useState([]);
-  const [error, setError] = useState('');
-  const [isLoaded, setIsLoaded] = useState(false);
+  const dispatch = useDispatch();
+  const { trelloData, error, isLoaded } = useSelector((state) => state.board);
 
   const baseURL = `https://api.trello.com/1/members/me/boards?key=${VITE_KEY}&token=${VITE_TOKEN}`;
 
   useEffect(() => {
-    axios.get(baseURL)
+    axios
+      .get(baseURL)
       .then((response) => {
-        return response.data
-      }).then((trello) => {
-        setTrelloData(trello);
-        setIsLoaded(true);
-      }).catch((error) => {
-        console.error(error.message);
-        setError(error.message);
+        dispatch(setData(response.data));
       })
-  }, [])
-
-
+      .catch((error) => {
+        console.error(error.message);
+        dispatch(setError(error.message));
+      });
+  }, [dispatch]);
 
   async function handleClick(name) {
     const url = 'https://api.trello.com/1/boards';
-    let newBoard = await axios.post(`${url}?name=${name}&key=${VITE_KEY}&token=${VITE_TOKEN}`);
-    setTrelloData([...trelloData, newBoard])
+    try {
+      const response = await axios.post(`${url}?name=${name}&key=${VITE_KEY}&token=${VITE_TOKEN}`);
+      dispatch(addBoard(response.data));
+    } catch (error) {
+      console.error(error.message);
+    }
   }
-
 
   if (error !== '') {
-    return <h2>{error}</h2>
+    return <h2>{error}</h2>;
   }
-
 
   return (
     <>
-      {!isLoaded ?
-        <h2 id='Loading'>Loading the data...</h2> :
+      {!isLoaded ? (
+        <h2 id="Loading">Loading the data...</h2>
+      ) : (
         <div>
           <Header />
           <Routes>
-
-            <Route path="/" element={
-              <>
-                <Trello trelloData={trelloData} handleClick={handleClick} />
-              </>
-            }>
-            </Route>
-            <Route path="/trelloCardList/:id" element={
-
-              <>
-                <TrelloCardList />
-              </>
-            }>
-            </Route>
-          </Routes >
+            <Route
+              path="/"
+              element={
+                <>
+                  <Trello trelloData={trelloData} handleClick={handleClick} />
+                </>
+              }
+            ></Route>
+            <Route
+              path="/trelloCardList/:id"
+              element={
+                <>
+                  <TrelloCardList />
+                </>
+              }
+            ></Route>
+          </Routes>
         </div>
-      }
-
+      )}
     </>
-  )
+  );
 }
 
-export default App
+export default App;
+
