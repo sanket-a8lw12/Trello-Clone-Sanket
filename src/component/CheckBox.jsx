@@ -14,7 +14,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 export default function CheckBox({ list, setList, item, id }) {
 
   const [checkBoxName, setCheckBoxName] = React.useState('');
-  
+
 
   async function addCheckBox() {
     const url = 'https://api.trello.com/1/checklists/';
@@ -28,6 +28,7 @@ export default function CheckBox({ list, setList, item, id }) {
     })
 
     setList([...newList]);
+    setCheckBoxName('');
 
   }
 
@@ -66,16 +67,23 @@ export default function CheckBox({ list, setList, item, id }) {
   }
 
 
-  async function deleteCheckItem(checkBoxItemId, itemId){
+  async function deleteCheckItem(checkBoxItemId, itemId) {
     console.log("clicked on delete")
     const urlDelete = "https://api.trello.com/1/"
-    let newArr = await axios.delete(`${urlDelete}checklists/${itemId}/checkItems/${checkBoxItemId}?key=${VITE_KEY}&token=${VITE_TOKEN}`);
+    await axios.delete(`${urlDelete}checklists/${itemId}/checkItems/${checkBoxItemId}?key=${VITE_KEY}&token=${VITE_TOKEN}`);
 
-    let newArray = cardData.filter((item)=>{
-      return item.id !== id;
+    let newUpdatedList = list.map((data) => {
+      if (data.id === itemId) {
+        data.checkItems = data.checkItems.filter((checkItemData) => {
+          return checkItemData.id !== checkBoxItemId;
+        })
+      }
+      return data;
+
     })
-    setCardData(newArray);
-    
+
+    setList([...newUpdatedList]);
+
   }
 
   return (
@@ -84,7 +92,9 @@ export default function CheckBox({ list, setList, item, id }) {
         <TextField sx={{
           height: "1em",
           width: '10em',
+          
         }}
+        value={checkBoxName}
           id='name'
           label="Enter CheckBox"
           variant="outlined"
@@ -99,7 +109,7 @@ export default function CheckBox({ list, setList, item, id }) {
         // console.log(checkBoxItem);
         return (
           <FormGroup key={checkBoxItem.name}>
-            <div style={{display: "flex", justifyContent: "space-between"}}>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
               <FormControlLabel control={<Checkbox id={checkBoxItem.id} checked={checkBoxItem.state === 'complete'}
                 onChange={handleCheckItemState}
               />} label={checkBoxItem.name} />
