@@ -92,9 +92,9 @@ export default function CheckBox({ list, setList, item, id }) {
         <TextField sx={{
           height: "1em",
           width: '10em',
-          
+
         }}
-        value={checkBoxName}
+          value={checkBoxName}
           id='name'
           label="Enter CheckBox"
           variant="outlined"

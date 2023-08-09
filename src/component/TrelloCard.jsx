@@ -5,8 +5,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, Typography } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-export default function TrelloCard({ cardName, id}) {
+
+export default function TrelloCard({ cardName, id }) {
   const cardStyle = {
     backgroundColor: "lightgrey",
     backgroundImage: "url(https://images.pexels.com/photos/260877/pexels-photo-260877.jpeg?auto=compress&cs=tinysrgb&w=600)",

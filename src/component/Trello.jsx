@@ -34,7 +34,6 @@ export default function Trello({ trelloData, handleClick }) {
         {trelloData.map((data) => {
           return < TrelloCard
             key={data.name}
-            // image={data.purfs.backgroundImage}
             cardName={data.name}
             id={data.id} />
         })}
@@ -44,25 +43,27 @@ export default function Trello({ trelloData, handleClick }) {
           <CardContent style={cardStyle}>
             <Typography variant="h6">
               <TextField
-              sx={{backgroundColor: "white"}}
+                sx={{ backgroundColor: "white" }}
                 label="Enter Board Name"
                 variant="outlined"
                 onChange={(event) => handleChange(event.target.value)}
               />
             </Typography>
             <Button onClick={() => handleClick(textValue)}
-            variant="contained" 
-            size="medium" 
-            sx={{ width: '9em', 
-            mt: 2,
-             marginLeft: "3.5em"}}>
+              variant="contained"
+              size="medium"
+              sx={{
+                width: '9em',
+                mt: 2,
+                marginLeft: "3.5em"
+              }}>
 
               Add Board
 
             </Button>
           </CardContent>
         </Card>
-        
+
       </div>
     </div >
   )

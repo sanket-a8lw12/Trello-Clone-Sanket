@@ -5,7 +5,7 @@ import ListCard from './ListCard';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { Card, CardContent, Typography } from '@mui/material';
-const {VITE_KEY, VITE_TOKEN} = import.meta.env;
+const { VITE_KEY, VITE_TOKEN } = import.meta.env;
 
 export default function TrelloCardList() {
 
@@ -47,7 +47,7 @@ export default function TrelloCardList() {
     setCardName(name);
   }
 
-  async function handleAddCard(cardname){
+  async function handleAddCard(cardname) {
     const url = `https://api.trello.com/1/boards/${id}/lists?name=${cardname}&key=${VITE_KEY}&token=${VITE_TOKEN}`;
     let newList = await axios.post(`${url}`);
     setListBoard([...listBoard, newList]);
@@ -64,7 +64,7 @@ export default function TrelloCardList() {
 
       {listBoard.map((data) => {
         return < ListCard key={data.name}
-          name={data.name} id={data.id} setListBoard={setListBoard}/>
+          name={data.name} id={data.id} setListBoard={setListBoard} />
       })}
 
       <Card style={cardStyle}>
@@ -73,10 +73,10 @@ export default function TrelloCardList() {
             <TextField sx={{ height: "2em" }}
               label="Enter List Name"
               variant="outlined"
-            onChange={(event) => handleCardChange(event.target.value)}
+              onChange={(event) => handleCardChange(event.target.value)}
             />
           </Typography>
-          <Button onClick={()=> handleAddCard(cardName)}
+          <Button onClick={() => handleAddCard(cardName)}
             variant="contained"
             size="medium"
             sx={{
