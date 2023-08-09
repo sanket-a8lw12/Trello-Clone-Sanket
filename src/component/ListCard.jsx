@@ -9,9 +9,11 @@ import AddIcon from '@mui/icons-material/Add';
 const { VITE_KEY, VITE_TOKEN } = import.meta.env;
 import axios from "axios";
 import CardData from './CardData';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 
-export default function ListCard({ name, id }) {
+
+export default function ListCard({ name, id, setListBoard }) {
 
   const [addACard, setAddACard] = useState("");
 
@@ -58,14 +60,32 @@ export default function ListCard({ name, id }) {
     setAddACard('');
   }
 
+  async function deleteListCard() {
+    const urlDelete = "https://api.trello.com/1/"
+    await axios.put(`${urlDelete}lists/${id}?closed=true&key=${VITE_KEY}&token=${VITE_TOKEN}`);
+
+    setListBoard(oldData => {
+      const newData = oldData.filter((data) => {
+        return data.id !== id;
+      })
+
+      return newData;
+    })
+
+  }
+
   return (
     <div>
 
       <Card style={cardStyle}>
-        <CardContent>
-          <Typography variant="h6" sx={{ textAlign: "center" }}>
-            {name}
-          </Typography>
+        <CardContent sx={{ display: "flex", flexDirection: "column", gap: "1em" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "1em" }}>
+            <Typography variant="h6" sx={{ textAlign: "center" }}>
+              {name}
+              <DeleteIcon onClick={() => deleteListCard()}
+                sx={{ color: "red" }} />
+            </Typography>
+          </div>
           {cardData.filter((item) => {
             return item.idList === id;
           }).map((data) => {
