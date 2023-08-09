@@ -11,6 +11,7 @@ export default function TrelloCardList() {
 
 
   const [listBoard, setListBoard] = useState([]);
+
   const [cardName, setCardName] = useState("");
 
   const { id } = useParams();
@@ -20,7 +21,6 @@ export default function TrelloCardList() {
   useEffect(() => {
     axios.get(url)
       .then((response) => {
-        // console.log(response.data)
         return response.data;
       })
       .then((boardList) => {
@@ -64,7 +64,7 @@ export default function TrelloCardList() {
 
       {listBoard.map((data) => {
         return < ListCard key={data.name}
-          name={data.name} id={data.id}/>
+          name={data.name} id={data.id} setListBoard={setListBoard}/>
       })}
 
       <Card style={cardStyle}>
