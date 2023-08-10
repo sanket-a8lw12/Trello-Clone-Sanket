@@ -36,7 +36,7 @@ export default function TrelloCardList() {
 
   console.log("useParams = " + id)
 
-  const url = `https://api.trello.com/1/boards/${id}/lists?key=7d88baae66e0dbda0675ce6fbb6b1aa8&token=ATTA31f0431674540d74dfa25400a6d53fcd457d38bdb6067c796929effcc92bc0a5B9968DA5`;
+  const url = `https://api.trello.com/1/boards/${id}/lists?key=${VITE_KEY}&token=${VITE_TOKEN}`;
 
   useEffect(() => {
     axios.get(url)
