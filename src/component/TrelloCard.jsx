@@ -1,11 +1,7 @@
-// import React from 'react'
-// import "./TrelloCard.css"
-// import { Link } from 'react-router-dom';
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, Typography } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
+
 
 
 export default function TrelloCard({ cardName, id }) {
