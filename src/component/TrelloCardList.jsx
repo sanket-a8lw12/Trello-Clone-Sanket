@@ -30,6 +30,7 @@ function reducer(state, action) {
 
 export default function TrelloCardList() {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const { listBoard, cardName } = state;
 
 
   const { id } = useParams();
@@ -73,7 +74,7 @@ export default function TrelloCardList() {
     const url = `https://api.trello.com/1/boards/${id}/lists?name=${cardname}&key=${VITE_KEY}&token=${VITE_TOKEN}`;
     let newList = await axios.post(`${url}`);
     // setListBoard([...listBoard, newList]);
-    dispatch({ type: 'SET_LIST_BOARD', payload: [...state.listBoard, newList] });
+    dispatch({ type: 'SET_LIST_BOARD', payload: [...listBoard, newList] });
   }
 
   return (
@@ -85,7 +86,7 @@ export default function TrelloCardList() {
       height: "85vh"
     }}>
 
-      {state.listBoard.map((data) => {
+      {listBoard.map((data) => {
         return < ListCard key={data.id}
           name={data.name} id={data.id} />
       })}
