@@ -63,7 +63,10 @@ function App() {
             <Route path="/trelloCardList/:id" element={
 
               <>
-                <TrelloCardList />
+                <TrelloCardList 
+                  error={error}
+                  setError={setError}
+                />
               </>
             }>
             </Route>

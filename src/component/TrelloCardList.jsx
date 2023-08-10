@@ -7,11 +7,10 @@ import TextField from '@mui/material/TextField';
 import { Card, CardContent, Typography } from '@mui/material';
 const { VITE_KEY, VITE_TOKEN } = import.meta.env;
 
-export default function TrelloCardList() {
+export default function TrelloCardList({error, setError}) {
 
 
   const [listBoard, setListBoard] = useState([]);
-
   const [cardName, setCardName] = useState("");
 
   const { id } = useParams();
@@ -25,7 +24,10 @@ export default function TrelloCardList() {
       })
       .then((boardList) => {
         setListBoard(boardList);
-      });
+      })
+      .catch((error) => {
+        setError(error.message);
+      })
   }, []);
 
   const cardStyle = {
