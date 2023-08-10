@@ -1,5 +1,6 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import ListCard from './ListCard';
 import Button from '@mui/material/Button';
@@ -7,15 +8,20 @@ import TextField from '@mui/material/TextField';
 import { Card, CardContent, Typography } from '@mui/material';
 const {VITE_KEY, VITE_TOKEN} = import.meta.env;
 
+import { setListBoard, setCardName, addListBoard } from '../cardSlice';
+
 export default function TrelloCardList() {
 
+  const dispatch = useDispatch();
 
-  const [listBoard, setListBoard] = useState([]);
-  const [cardName, setCardName] = useState("");
+  const {listBoard, cardName } = useSelector((state) => state.card);
+
+  // const [listBoard, setListBoard] = useState([]);
+  // const [cardName, setCardName] = useState("");
 
   const { id } = useParams();
 
-  const url = `https://api.trello.com/1/boards/${id}/lists?key=7d88baae66e0dbda0675ce6fbb6b1aa8&token=ATTA31f0431674540d74dfa25400a6d53fcd457d38bdb6067c796929effcc92bc0a5B9968DA5`;
+  const url = `https://api.trello.com/1/boards/${id}/lists?key=${VITE_KEY}&token=${VITE_TOKEN}`;
 
   useEffect(() => {
     axios.get(url)
@@ -24,13 +30,13 @@ export default function TrelloCardList() {
         return response.data;
       })
       .then((boardList) => {
-        setListBoard(boardList);
+        // setListBoard(boardList);
+        dispatch(setListBoard(boardList));
       });
   }, []);
 
   const cardStyle = {
     backgroundColor: "lightgrey",
-    // backgroundImage: `url(${cardImage})`,
     backgroundSize: "cover",
     color: "white",
     borderRadius: "0.4em",
@@ -44,13 +50,15 @@ export default function TrelloCardList() {
 
 
   const handleCardChange = (name) => {
-    setCardName(name);
+    // setCardName(name);
+    dispatch(setCardName(name));
   }
 
   async function handleAddCard(cardname){
     const url = `https://api.trello.com/1/boards/${id}/lists?name=${cardname}&key=${VITE_KEY}&token=${VITE_TOKEN}`;
     let newList = await axios.post(`${url}`);
-    setListBoard([...listBoard, newList]);
+    // setListBoard([...listBoard, newList]);
+    dispatch(addListBoard(newList));
   }
 
   return (
