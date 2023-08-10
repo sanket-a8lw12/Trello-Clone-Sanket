@@ -13,6 +13,8 @@ import CardData from './CardData';
 
 export default function ListCard({ name, id }) {
 
+  console.log("ListCard = " + id);
+
   const [addACard, setAddACard] = useState("");
 
   const [cardData, setCardData] = useState([]);
@@ -54,6 +56,7 @@ export default function ListCard({ name, id }) {
   async function handleAddACard(name) {
     const url = 'https://api.trello.com/1/cards';
     let newCard = await axios.post(`${url}?name=${name}&idList=${id}&key=${VITE_KEY}&token=${VITE_TOKEN}`);
+    console.log("newCard.data = " + newCard.data, cardData)
     setCardData([...cardData, newCard.data])
     setAddACard('');
   }
@@ -69,7 +72,7 @@ export default function ListCard({ name, id }) {
           {cardData.filter((item) => {
             return item.idList === id;
           }).map((data) => {
-            return <CardData key={data.name}
+            return <CardData key={data.id}
               id={data.id}
               name={data.name}
               setCardData={setCardData}

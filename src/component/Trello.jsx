@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import { Card, CardContent, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 export default function Trello({ trelloData, handleClick }) {
 
@@ -32,11 +33,11 @@ export default function Trello({ trelloData, handleClick }) {
     <div className='trello'>
       <div className='trelloInfo' >
         {trelloData.map((data) => {
-          return < TrelloCard
-            key={data.name}
-            // image={data.purfs.backgroundImage}
-            cardName={data.name}
-            id={data.id} />
+          return <Link to={`/trelloCardList/${data.id}`} style={{ textDecoration: 'none' }} key={data.id}>
+            < TrelloCard              
+              cardName={data.name}
+              id={data.id} />
+          </Link>
         })}
 
 
@@ -44,25 +45,27 @@ export default function Trello({ trelloData, handleClick }) {
           <CardContent style={cardStyle}>
             <Typography variant="h6">
               <TextField
-              sx={{backgroundColor: "white"}}
+                sx={{ backgroundColor: "white" }}
                 label="Enter Board Name"
                 variant="outlined"
                 onChange={(event) => handleChange(event.target.value)}
               />
             </Typography>
             <Button onClick={() => handleClick(textValue)}
-            variant="contained" 
-            size="medium" 
-            sx={{ width: '9em', 
-            mt: 2,
-             marginLeft: "3.5em"}}>
+              variant="contained"
+              size="medium"
+              sx={{
+                width: '9em',
+                mt: 2,
+                marginLeft: "3.5em"
+              }}>
 
               Add Board
 
             </Button>
           </CardContent>
         </Card>
-        
+
       </div>
     </div >
   )

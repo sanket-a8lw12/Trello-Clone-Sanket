@@ -102,7 +102,7 @@ export default function CheckListPopUp({ name, id, cardData }) {
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
-              }} key={item.name}>
+              }} key={item.id}>
                 <div style={{ display: "flex", gap: "1em" }}>
                   <Fab variant="extended" sx={{
                     width: "14em"
