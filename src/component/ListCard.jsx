@@ -1,5 +1,5 @@
 import { Height, Padding } from '@mui/icons-material';
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useReducer } from 'react'
 import { Link } from 'react-router-dom';
 import { Card, CardContent, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
@@ -10,14 +10,34 @@ const { VITE_KEY, VITE_TOKEN } = import.meta.env;
 import axios from "axios";
 import CardData from './CardData';
 
+const initialState = {
+  addACard: '',
+  cardData: [],
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'SET_ADD_A_CARD':
+      return { ...state, addACard: action.payload };
+    case 'SET_CARD_DATA':
+      return { ...state, cardData: action.payload };
+    default:
+      return state;
+  }
+}
 
 export default function ListCard({ name, id }) {
 
-  console.log("ListCard = " + id);
 
-  const [addACard, setAddACard] = useState("");
 
-  const [cardData, setCardData] = useState([]);
+  // console.log("ListCard = " + id);
+
+  // const [addACard, setAddACard] = useState("");
+
+  // const [cardData, setCardData] = useState([]);
+
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { addACard, cardData } = state;
 
 
   const cardStyle = {
@@ -41,7 +61,8 @@ export default function ListCard({ name, id }) {
       .then((response) => {
         return response.data
       }).then((trello) => {
-        setCardData(trello);
+        // setCardData(trello);
+        dispatch({ type: 'SET_CARD_DATA', payload: trello });
       }).catch((error) => {
         console.error(error);
       })
@@ -50,15 +71,18 @@ export default function ListCard({ name, id }) {
   //function to set name and add new card
 
   function handleAddACardName(name) {
-    setAddACard(name);
+    // setAddACard(name);
+    dispatch({ type: 'SET_ADD_A_CARD', payload: name });
   }
 
   async function handleAddACard(name) {
     const url = 'https://api.trello.com/1/cards';
     let newCard = await axios.post(`${url}?name=${name}&idList=${id}&key=${VITE_KEY}&token=${VITE_TOKEN}`);
     console.log("newCard.data = " + newCard.data, cardData)
-    setCardData([...cardData, newCard.data])
-    setAddACard('');
+    // setCardData([...cardData, newCard.data])
+    // setAddACard('');
+    dispatch({ type: 'SET_CARD_DATA', payload: [...cardData, newCard.data] });
+    dispatch({ type: 'SET_ADD_A_CARD', payload: '' });
   }
 
   return (
